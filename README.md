@@ -1,7 +1,28 @@
-# GitHub Codespaces ♥️ Jupyter Notebooks
+# 🧱 Servidor de Minecraft Interactivo (Forge/Fabric/Vanilla)
 
-Welcome to your shiny new codespace! We've got everything fired up and running for you to explore Python and Jupyter notebooks.
+Este proyecto te permite ejecutar un servidor de Minecraft **interactivamente** usando un script Python que automatiza la instalación y ejecución para **versiones Vanilla, Forge o Fabric**, basado en tu configuración.
 
-You've got a blank canvas to work on from a git perspective as well. There's a single initial commit with what you're seeing right now - where you go from here is up to you!
+> **Requisitos:**
+> - Codespace con Ubuntu y al menos **16 GB de RAM y 4 cores**
+> - Python 3.9+
+> - Java 8, 17 y 21 disponibles en el contenedor
 
-Everything you do here is contained within this one codespace. There is no repository on GitHub yet. If and when you’re ready you can click "Publish Branch" and we’ll create your repository and push up your project. If you were just exploring then and have no further need for this code then you can simply delete your codespace and it's gone forever.
+---
+
+## 🚀 Primeros pasos
+
+1. **Asegúrate de tener los archivos de versión:**
+
+- `VERSION.txt`: contiene la versión de Minecraft que quieres usar (por ejemplo, `1.16.4`)
+- `FORGE_VERSION.txt`: contiene la subversión de Forge si usas Forge (por ejemplo, `35.0.0`)
+
+Ambos archivos deben estar en la carpeta `server/`.
+
+---
+
+## 🧪 Ejecutar el servidor paso a paso
+
+Desde la terminal del codespace (estando en la raíz del proyecto), ejecuta:
+
+```bash
+python3 server/server.py
