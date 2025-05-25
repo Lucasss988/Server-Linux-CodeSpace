@@ -7,6 +7,11 @@ import socket
 import sys
 from xml.etree import ElementTree
 import argparse
+import json
+import time
+import urllib.request
+import requests 
+from dotenv import load_dotenv  # Agrega esta línea al inicio del archivo
 
 SERVER_DIR = os.path.dirname(os.path.abspath(__file__))
 VERSION_FILE = os.path.join(SERVER_DIR, "VERSION.txt")
@@ -51,6 +56,7 @@ def seleccionar_java_por_version(mc_version):
 
     if version_numerica <= 1.16:
         rutas_preferidas.append("/usr/lib/jvm/temurin-8u312/bin/java")
+        rutas_preferidas.append("/usr/lib/jvm/java-8-openjdk-amd64/bin/java")  # <-- Añade esta línea
     elif version_numerica <= 1.20:
         rutas_preferidas.append("/usr/lib/jvm/java-17-openjdk-amd64/bin/java")
     else:
@@ -58,6 +64,7 @@ def seleccionar_java_por_version(mc_version):
 
     rutas_preferidas += [
         "/usr/lib/jvm/temurin-8u312/bin/java",
+        "/usr/lib/jvm/java-8-openjdk-amd64/bin/java",  # <-- Añade esta línea
         "/usr/lib/jvm/java-17-openjdk-amd64/bin/java",
         "/usr/lib/jvm/java-21-openjdk-amd64/bin/java"
     ]
@@ -94,6 +101,67 @@ def descargar_instalador_fabric(version, destino):
         latest_installer = data[0]["url"]
         urllib.request.urlretrieve(latest_installer, destino)
 
+# Carga las variables de entorno desde el archivo .env en la carpeta server
+load_dotenv(os.path.join(SERVER_DIR, ".env"))
+
+def leer_webhook_desde_env():
+    # Solo obtiene el webhook desde la variable de entorno del .env
+    return os.environ.get("DISCORD_WEBHOOK")
+
+def enviar_webhook_discord(webhook_url, mensaje):
+    if not webhook_url:
+        print("No se encontró el webhook de Discord.")
+        return
+    data = {"content": mensaje}
+    try:
+        response = requests.post(webhook_url, json=data)
+        if response.status_code == 204:
+            print("Mensaje enviado a Discord correctamente.")
+        else:
+            print(f"Error al enviar mensaje a Discord: {response.status_code}")
+    except Exception as e:
+        print(f"Error enviando webhook: {e}")
+
+WEBHOOK_URL = leer_webhook_desde_env()
+
+def notificar_estado_servidor(estado, version=None, public_url=None):
+    version_info = f"\nVersión de Minecraft: `{version}`" if version else ""
+    ngrok_info = f"\n🌐 Acceso público: `{public_url}`" if public_url else "\n🌐 No se pudo obtener la URL pública de ngrok."
+    if estado == "online":
+        mensaje = f"🟢 El servidor está **ONLINE**{version_info}{ngrok_info}"
+    else:
+        mensaje = f"🔴 El servidor está **OFFLINE**{version_info}{ngrok_info}"
+    enviar_webhook_discord(WEBHOOK_URL, mensaje)
+
+def iniciar_ngrok_y_obtener_url(puerto=25565):
+    # Obtiene el authtoken de ngrok desde el .env
+    ngrok_authtoken = os.environ.get("NGROK_AUTHTOKEN")
+    if not ngrok_authtoken:
+        print("No se encontró NGROK_AUTHTOKEN en el .env. Por favor, agrégalo.")
+        return None, None
+
+    # Autentica ngrok antes de iniciar el túnel (solo la primera vez es necesario, pero es seguro repetirlo)
+    subprocess.run(["ngrok", "config", "add-authtoken", ngrok_authtoken], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    ngrok_proc = subprocess.Popen(
+        ["ngrok", "tcp", str(puerto)],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.STDOUT
+    )
+    # Espera más tiempo para que ngrok levante el túnel
+    time.sleep(10)
+    try:
+        resp = requests.get("http://localhost:4040/api/tunnels")
+        tunnels = resp.json().get("tunnels", [])
+        for tunnel in tunnels:
+            if tunnel["proto"] == "tcp":
+                public_url = tunnel["public_url"]
+                return public_url, ngrok_proc
+        print("⚠️ No se encontró túnel TCP en la respuesta de ngrok.")
+    except Exception as e:
+        print(f"Error obteniendo la URL de ngrok: {e}")
+    return None, ngrok_proc
+
 # Leer la versión deseada
 version = leer_version(VERSION_FILE)
 
@@ -115,6 +183,11 @@ else:
     if modo == "mods":
         modloader = input("¿Qué modloader quieres usar? Escribe 'forge' o 'fabric': ").strip().lower()
 
+if modo == "mods" and modloader == "forge":
+    version = leer_version(FORGE_VERSION_FILE)
+else:
+    version = leer_version(VERSION_FILE)
+
 if modo == "mods":
     if modloader == "forge":
         forge_version = get_latest_forge_version(version)
@@ -126,6 +199,43 @@ if modo == "mods":
     else:
         print("Modloader no válido. Iniciando vanilla.")
         modo = "vanilla"
+
+# Preguntar versión después de elegir modloader
+if modo == "mods":
+    if modloader == "forge":
+        version_actual = leer_version(FORGE_VERSION_FILE)
+    elif modloader == "fabric":
+        version_actual = leer_version(VERSION_FILE)
+    else:
+        version_actual = leer_version(VERSION_FILE)
+
+    print(f"La versión actual configurada es: {version_actual}")
+    cambiar = input("¿Quieres cambiar la versión? (s/n): ").strip().lower()
+    if cambiar == "s":
+        nueva_version = input("Escribe la versión de Minecraft que quieres usar (ejemplo: 1.20.4): ").strip()
+        if modloader == "forge":
+            with open(FORGE_VERSION_FILE, "w") as f:
+                f.write(nueva_version)
+        else:
+            with open(VERSION_FILE, "w") as f:
+                f.write(nueva_version)
+        version = nueva_version
+        print(f"Versión cambiada a: {version}")
+        # <-- Agrega esto:
+        if modloader == "forge":
+            forge_version = get_latest_forge_version(version)
+    else:
+        version = version_actual
+
+# Selecciona el Java correcto según la versión final
+java_bin = args_parsed.java if args_parsed.java != "java" else seleccionar_java_por_version(version)
+print(f"✅ Usando Java: {java_bin}")
+
+ngrok_proc = None
+public_url = None
+
+if modo in ["vanilla", "mods"]:
+    public_url, ngrok_proc = iniciar_ngrok_y_obtener_url(25565)
 
 if modo == "mods" and modloader == "forge":
     FORGE_DIR = os.path.join(SERVER_DIR, "forge")
@@ -144,23 +254,101 @@ if modo == "mods" and modloader == "forge":
         print("Forge installer descargado.")
 
     print("Instalando Forge...")
-    subprocess.run([java_bin, "-jar", "forge-installer.jar", "--installServer"], cwd=FORGE_DIR)
+    subprocess.run(
+        [java_bin, "-jar", "forge-installer.jar", "--installServer"],
+        cwd=FORGE_DIR,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL  # Oculta los errores gráficos de la salida
+    )
 
     forge_jar_file = None
+
+    # 1. Buscar archivo universal específico
     for file in os.listdir(FORGE_DIR):
-        if file.startswith(f"forge-{version}-{forge_version}") and file.endswith(".jar"):
+        if file.endswith(".jar") and "universal" in file and file.startswith(f"forge-{version}-{forge_version}"):
             forge_jar_file = os.path.join(FORGE_DIR, file)
             break
 
+    # 2. Buscar cualquier archivo universal
     if not forge_jar_file:
-        raise RuntimeError("No se encontró el archivo JAR de Forge después de la instalación.")
+        for file in os.listdir(FORGE_DIR):
+            if file.endswith(".jar") and "universal" in file and file.startswith("forge"):
+                forge_jar_file = os.path.join(FORGE_DIR, file)
+                break
+
+    # 3. Buscar archivo server como último recurso
+    if not forge_jar_file:
+        for file in os.listdir(FORGE_DIR):
+            if file.endswith(".jar") and file.startswith("forge") and "installer" not in file:
+                forge_jar_file = os.path.join(FORGE_DIR, file)
+                break
+
+    # 4. Si solo hay installer, decide según la versión de Minecraft
+    if not forge_jar_file:
+        # Extrae la versión mayor y menor de Minecraft
+        partes = version.split(".")
+        try:
+            major = int(partes[0])
+            minor = int(partes[1])
+        except (IndexError, ValueError):
+            major = 0
+            minor = 0
+
+        # Si es 1.17 o superior, usa run.sh
+        if (major == 1 and minor >= 17) or (major > 1):
+            run_sh = os.path.join(FORGE_DIR, "run.sh")
+            if os.path.exists(run_sh):
+                print("Iniciando servidor Forge con mods usando run.sh...")
+                subprocess.run(["bash", "run.sh"], cwd=FORGE_DIR)
+                print("El servidor fue cerrado con éxito.")
+                sys.exit(0)
+            else:
+                raise RuntimeError("No se encontró el script run.sh de Forge después de la instalación. ¿El instalador terminó correctamente?")
+        else:
+            raise RuntimeError("No se encontró el archivo JAR de Forge después de la instalación. ¿El instalador terminó correctamente?")
 
     with open(os.path.join(FORGE_DIR, "eula.txt"), "w") as f:
         f.write("eula=true\n")
 
+    # Ahora sí, ejecuta el servidor
+    if (major == 1 and minor >= 17) or (major > 1):
+        run_sh = os.path.join(FORGE_DIR, "run.sh")
+        if os.path.exists(run_sh):
+            print("Preparando eula.txt para Forge...")
+            # 1. Ejecuta run.sh SOLO hasta que se genere eula.txt
+            proc = subprocess.Popen(["bash", "run.sh"], cwd=FORGE_DIR)
+            import time
+            eula_path = os.path.join(FORGE_DIR, "eula.txt")
+            # Espera a que se genere eula.txt (timeout 30s)
+            for _ in range(30):
+                if os.path.exists(eula_path):
+                    break
+                time.sleep(1)
+            # Mata el proceso si sigue corriendo
+            proc.terminate()
+            try:
+                proc.wait(timeout=5)
+            except Exception:
+                proc.kill()
+            # 2. Escribe eula=true
+            with open(eula_path, "w") as f:
+                f.write("eula=true\n")
+            print("eula.txt actualizado a eula=true. Iniciando servidor Forge con mods...")
+            # 3. Ahora sí, arranca el servidor normalmente
+            subprocess.run(["bash", "run.sh"], cwd=FORGE_DIR)
+            print("El servidor fue cerrado con éxito.")
+            sys.exit(0)
+        else:
+            raise RuntimeError("No se encontró el script run.sh de Forge después de la instalación. ¿El instalador terminó correctamente?")
+
+    # Si usas el JAR universal (para versiones antiguas)
     print("Iniciando servidor Forge con mods...")
+    notificar_estado_servidor("online", version, public_url)  # Notifica que está online antes de arrancar
     subprocess.run([java_bin, "-Xmx10G", "-Xms10G", "-jar", os.path.basename(forge_jar_file), "nogui"], cwd=FORGE_DIR)
-    print("Servidor Forge iniciado.")
+    print("El servidor fue cerrado con éxito.")
+    notificar_estado_servidor("offline", version, public_url)
+    if ngrok_proc:
+        ngrok_proc.terminate()
 
 elif modo == "mods" and modloader == "fabric":
     FABRIC_DIR = os.path.join(SERVER_DIR, "fabric")
@@ -184,10 +372,27 @@ elif modo == "mods" and modloader == "fabric":
         raise RuntimeError("No se encontró server.jar en la carpeta de Fabric")
 
     print("Iniciando servidor Fabric...")
+    notificar_estado_servidor("online", version, public_url)  # Notifica que está online antes de arrancar
     subprocess.run([java_bin, "-Xmx8G", "-Xms8G", "-jar", "server.jar", "nogui"], cwd=FABRIC_DIR)
-    print("Servidor Fabric iniciado.")
+    print("El servidor fue cerrado con éxito.")
+    notificar_estado_servidor("offline", version, public_url)
+    if ngrok_proc:
+        ngrok_proc.terminate()
 
 elif modo == "vanilla":
+    # Pide la versión de Minecraft al usuario antes de continuar
+    version_actual = leer_version(VERSION_FILE)
+    print(f"La versión actual configurada es: {version_actual}")
+    cambiar = input("¿Quieres cambiar la versión? (s/n): ").strip().lower()
+    if cambiar == "s":
+        nueva_version = input("Escribe la versión de Minecraft que quieres usar (ejemplo: 1.20.4): ").strip()
+        with open(VERSION_FILE, "w") as f:
+            f.write(nueva_version)
+        version = nueva_version
+        print(f"Versión cambiada a: {version}")
+    else:
+        version = version_actual
+
     VANILLA_DIR = os.path.join(SERVER_DIR, "vanilla")
     if not version_instalada_ok(VANILLA_DIR, version):
         if os.path.exists(VANILLA_DIR):
@@ -221,20 +426,10 @@ elif modo == "vanilla":
         f.write("eula=true\n")
 
     print("Iniciando servidor vanilla...")
+    notificar_estado_servidor("online", version, public_url)  # Notifica que está online antes de arrancar
     subprocess.run([java_bin, "-Xmx8G", "-Xms8G", "-jar", "server.jar", "nogui"], cwd=VANILLA_DIR)
-    print("Servidor vanilla iniciado.")
+    print("El servidor fue cerrado con éxito.")
+    notificar_estado_servidor("offline", version, public_url)
+    if ngrok_proc:
+        ngrok_proc.terminate()
 
-def get_local_ip():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
-        s.close()
-        return ip
-    except Exception:
-        return "localhost"
-
-print("\n====================================")
-print("Dirección para conectarse al servidor de Minecraft:")
-print(f"IP: {get_local_ip()}  Puerto: 25565")
-print("====================================\n")

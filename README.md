@@ -14,7 +14,7 @@ Este proyecto te permite ejecutar un servidor de Minecraft **interactivamente** 
 1. **Asegúrate de tener los archivos de versión:**
 
 - `VERSION.txt`: contiene la versión de Minecraft que quieres usar (por ejemplo, `1.16.4`)
-- `FORGE_VERSION.txt`: contiene la subversión de Forge si usas Forge (por ejemplo, `35.0.0`)
+- `FORGE_VERSION.txt`: contiene la version de Forge en caso de ocupar mods (por ejemplo, `1.16.4`)
 
 Ambos archivos deben estar en la carpeta `server/`.
 
