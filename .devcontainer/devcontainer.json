@@ -1,0 +1,42 @@
+{
+  "name": "Minecraft Server Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "none",
+      "installTemurin": "true",
+      "temurinDistribution": "temurin",
+      "versions": [
+        "8",
+        "17",
+        "21"
+      ]
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    }
+  },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y unzip curl wget",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python3",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "editorconfig.editorconfig"
+      ]
+    }
+  },
+  "remoteUser": "vscode",
+  "runArgs": [
+    "--cpus=4",
+    "--memory=14g"
+  ],
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "14gb"
+  }
+}
