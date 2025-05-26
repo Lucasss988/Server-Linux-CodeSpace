@@ -124,20 +124,54 @@ def enviar_webhook_discord(webhook_url, mensaje):
 
 WEBHOOK_URL = leer_webhook_desde_env()
 
-def notificar_estado_servidor(estado, version=None, public_url=None):
-    version_info = f"\nVersión de Minecraft: `{version}`" if version else ""
+def notificar_estado_servidor(
+    estado=None,
+    version=None,
+    public_url=None,
+    modo=None,
+    modloader=None,
+    forge_version=None,
+    fabric_version=None
+):
     # Quita el prefijo tcp:// si existe
     if public_url and public_url.startswith("tcp://"):
         ip_publica = public_url.replace("tcp://", "")
-        ngrok_info = f"\n🌐 Acceso público: `{ip_publica}`"
     elif public_url:
-        ngrok_info = f"\n🌐 Acceso público: `{public_url}`"
+        ip_publica = public_url
     else:
-        ngrok_info = "\n🌐 No se pudo obtener la URL pública de ngrok."
+        ip_publica = "No disponible"
+
+    # Construye detalles según el modo y modloader
+    if modo == "vanilla":
+        detalles = f"**Tipo:** Vanilla\n**Versión:** `{version}`"
+    elif modo == "mods" and modloader == "forge":
+        detalles = f"**Tipo:** Forge\n**Minecraft:** `{version}`\n**Forge:** `{forge_version or 'Desconocida'}`"
+    elif modo == "mods" and modloader == "fabric":
+        detalles = f"**Tipo:** Fabric\n**Minecraft:** `{version}`\n**Fabric Installer:** `{fabric_version or 'Desconocido'}`"
+    else:
+        detalles = f"**Tipo:** Desconocido\n**Versión:** `{version}`"
+
+    # Mensaje interactivo con copiar IP
+    if ip_publica != "No disponible":
+        copiar = f"**Copia y pega esta IP en Minecraft:**\n```\n{ip_publica}\n```"
+    else:
+        copiar = ""
+
     if estado == "online":
-        mensaje = f"🟢 El servidor está **ONLINE**{version_info}{ngrok_info}"
+        mensaje = (
+            f"🟢 **¡Servidor ONLINE!**\n"
+            f"{detalles}\n"
+            f"🌐 **Acceso público:** `{ip_publica}`\n"
+            f"{copiar}\n"
+            f"✨ ¡Conéctate y juega ahora!"
+        )
     else:
-        mensaje = f"🔴 El servidor está **OFFLINE**{version_info}{ngrok_info}"
+        mensaje = (
+            f"🔴 **Servidor OFFLINE**\n"
+            f"{detalles}\n"
+            f"🌐 **Última IP pública:** `{ip_publica}`\n"
+            f"⏹️ El servidor ha sido detenido."
+        )
     enviar_webhook_discord(WEBHOOK_URL, mensaje)
 
 def iniciar_ngrok_y_obtener_url(puerto=25565):
@@ -329,8 +363,12 @@ if modo == "mods" and modloader == "forge":
             run_sh = os.path.join(FORGE_DIR, "run.sh")
             if os.path.exists(run_sh):
                 print("Iniciando servidor Forge con mods usando run.sh...")
+                notificar_estado_servidor("online", version, public_url, modo="mods", modloader="forge", forge_version=forge_version)
                 subprocess.run(["bash", "run.sh"], cwd=FORGE_DIR)
                 print("El servidor fue cerrado con éxito.")
+                notificar_estado_servidor("offline", version, public_url, modo="mods", modloader="forge", forge_version=forge_version)
+                if ngrok_proc:
+                    ngrok_proc.terminate()
                 sys.exit(0)
             else:
                 raise RuntimeError("No se encontró el script run.sh de Forge después de la instalación. ¿El instalador terminó correctamente?")
@@ -373,10 +411,10 @@ if modo == "mods" and modloader == "forge":
 
     # Si usas el JAR universal (para versiones antiguas)
     print("Iniciando servidor Forge con mods...")
-    notificar_estado_servidor("online", version, public_url)  # Notifica que está online antes de arrancar
+    notificar_estado_servidor("online", version, public_url, modo="mods", modloader="forge", forge_version=forge_version)
     subprocess.run([java_bin, *ram_str.split(), "-jar", os.path.basename(forge_jar_file), "nogui"], cwd=FORGE_DIR)
     print("El servidor fue cerrado con éxito.")
-    notificar_estado_servidor("offline", version, public_url)
+    notificar_estado_servidor("offline", version, public_url, modo="mods", modloader="forge", forge_version=forge_version)
     if ngrok_proc:
         ngrok_proc.terminate()
 
@@ -402,10 +440,10 @@ elif modo == "mods" and modloader == "fabric":
         raise RuntimeError("No se encontró server.jar en la carpeta de Fabric")
 
     print("Iniciando servidor Fabric...")
-    notificar_estado_servidor("online", version, public_url)  # Notifica que está online antes de arrancar
+    notificar_estado_servidor("online", version, public_url, modo="mods", modloader="fabric", fabric_version="0.15.7")
     subprocess.run([java_bin, *ram_str.split(), "-jar", "server.jar", "nogui"], cwd=FABRIC_DIR)
     print("El servidor fue cerrado con éxito.")
-    notificar_estado_servidor("offline", version, public_url)
+    notificar_estado_servidor("offline", version, public_url, modo="mods", modloader="fabric", fabric_version="0.15.7")
     if ngrok_proc:
         ngrok_proc.terminate()
 
@@ -456,10 +494,10 @@ elif modo == "vanilla":
         f.write("eula=true\n")
 
     print("Iniciando servidor vanilla...")
-    notificar_estado_servidor("online", version, public_url)  # Notifica que está online antes de arrancar
+    notificar_estado_servidor("online", version, public_url, modo="vanilla")
     subprocess.run([java_bin, *ram_str.split(), "-jar", "server.jar", "nogui"], cwd=VANILLA_DIR)
     print("El servidor fue cerrado con éxito.")
-    notificar_estado_servidor("offline", version, public_url)
+    notificar_estado_servidor("offline", version, public_url, modo="vanilla")
     if ngrok_proc:
         ngrok_proc.terminate()
 
