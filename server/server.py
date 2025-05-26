@@ -202,6 +202,25 @@ def iniciar_ngrok_y_obtener_url(puerto=25565):
         print(f"Error obteniendo la URL de ngrok: {e}")
     return None, ngrok_proc
 
+# --- Selección de túnel ---
+print("¿Qué método quieres usar para exponer el servidor?")
+print("1. ngrok")
+print("2. Ninguno (ya tengo el puerto abierto o es una VPS)")
+opcion_tunel = input("Elige 1 o 2: ").strip()
+
+ngrok_proc = None
+public_url = None
+
+if opcion_tunel == "1":
+    public_url, ngrok_proc = iniciar_ngrok_y_obtener_url(25565)
+else:
+    print("No se usará túnel. Asegúrate de tener el puerto abierto en tu VPS.")
+    try:
+        ip = requests.get("https://api.ipify.org").text
+        public_url = f"{ip}:25565"
+    except Exception:
+        public_url = "Tu_IP_Publica:25565"
+
 # Leer la versión deseada
 version = leer_version(VERSION_FILE)
 
@@ -500,4 +519,5 @@ elif modo == "vanilla":
     notificar_estado_servidor("offline", version, public_url, modo="vanilla")
     if ngrok_proc:
         ngrok_proc.terminate()
-
+if ngrok_proc:
+    ngrok_proc.terminate()

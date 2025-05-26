@@ -285,4 +285,69 @@ Tu servidor de Minecraft se instalará y ejecutará automáticamente, exponiénd
 
 ---
 
+## 🛡️ Consejos y advertencias importantes
+
+### 🚦 ¿Por qué no puedo usar el puerto 25565 con ngrok gratis?
+> 🔒 **ngrok solo permite reservar el puerto 25565 si tienes una cuenta verificada con método de pago.**  
+> Si usas una cuenta gratuita, ngrok te dará un puerto aleatorio cada vez.  
+> 👉 **Solución:**  
+> - Usa el puerto que te asigne ngrok (ejemplo: `tcp://0.tcp.ngrok.io:12345`) y compártelo con tus amigos.
+> - Recuerda que si es una cuenta sin verificar deberas cambiar tu el puerto en server.properties para que           funcione correctamente, si no deberas verificarte para que el programa funcione solo como ya esta definido.
+> - Si necesitas el puerto 25565 fijo, deberás agregar un método de pago en ngrok.
+
+---
+
+### 🧑‍🤝‍🧑 ¿Cómo pueden conectarse mis amigos?
+
+- Si usas **ngrok**, comparte la dirección pública que te muestra el script (ejemplo: `tcp://0.tcp.ngrok.io:12345`).
+- Si usas **puerto abierto/VPS**, comparte tu IP pública (ejemplo: `190.123.45.67:25565`).
+- Recuerda que **el servidor debe estar encendido** para que puedan conectarse.
+
+---
+
+### 🛑 ¿Por qué mi servidor no aparece en la lista de LAN de Minecraft?
+
+- Los servidores expuestos por ngrok o VPS **no aparecen en la lista de LAN**.
+- Tus amigos deben conectarse manualmente usando la IP y puerto que les des.
+
+---
+
+### 🕒 ¿Por qué Codespaces no es ideal para servidores de Minecraft?
+
+- ⏳ **Codespaces se apaga automáticamente tras 30 minutos sin actividad.**
+- 🛑 **No es recomendable para servidores públicos o de larga duración.**
+- ✅ Úsalo solo para pruebas, desarrollo o partidas cortas.
+
+---
+
+### 🧩 ¿Cómo agrego mods o datapacks?
+
+- Para **mods**:  
+  - Usa la opción Forge o Fabric al iniciar el script.
+  - Coloca los archivos `.jar` de los mods en la carpeta `mods` dentro del directorio del servidor correspondiente.
+- Para **datapacks**:  
+  - Coloca los datapacks en la carpeta `datapacks` dentro de `world` en el servidor.
+
+---
+
+### 📦 ¿Dónde están los archivos del mundo y la configuración?
+
+- Los archivos del mundo, propiedades y mods se encuentran en las carpetas:
+  - `server/vanilla/`
+  - `server/forge/`
+  - `server/fabric/`
+- Puedes hacer copias de seguridad o personalizar la configuración editando los archivos en estas carpetas.
+
+---
+
+### 🆘 ¿Necesitas ayuda?
+
+- Consulta los mensajes de error en la terminal.
+- Busca en la [wiki oficial de Minecraft](https://minecraft.fandom.com/wiki/Tutorials/Setting_up_a_server).
+- Pregunta en foros o comunidades de Minecraft si tienes dudas específicas.
+
+---
+
+> 🟢 **¡Diviértete y comparte tu mundo con tus amigos!**
 > 🟢 **¡Disfruta tu servidor de Minecraft interactivo y automatizado!**
+---
