@@ -48,38 +48,118 @@ El script se encargará de autenticar ngrok usando ese token la primera vez que 
 
 ---
 
-## 🧪 Ejecutar el servidor paso a paso
+## 🧑‍💻 Instalación y uso paso a paso en Linux
 
-Desde la terminal del codespace (estando en la raíz del proyecto), ejecuta:
+Sigue estos pasos para preparar y ejecutar tu servidor de Minecraft en cualquier sistema Linux compatible:
+
+### 1. Instala los requisitos del sistema
+
+Asegúrate de tener instalados los siguientes paquetes:
+
+```bash
+sudo apt update
+sudo apt install -y python3 python3-pip git wget curl unzip
+```
+
+### 2. Instala Java (8, 17 y 21)
+
+Puedes instalar varias versiones de Java con:
+
+```bash
+sudo apt install -y openjdk-8-jdk openjdk-17-jdk openjdk-21-jdk
+```
+
+Verifica que Java esté instalado:
+
+```bash
+java -version
+```
+
+> **Importante:**  
+> Si vas a usar **Forge** con la versión de Minecraft **1.16.4** (o versiones similares de la 1.16), asegúrate de usar **Java 8** para evitar errores de compatibilidad.  
+> Puedes especificar el ejecutable de Java 8 al iniciar el servidor así:
+>
+> ```bash
+> python3 server/server.py --java /usr/lib/jvm/java-8-openjdk-amd64/bin/java
+> ```
+>
+> Cambia la ruta si tu sistema tiene Java 8 en otra ubicación.
+
+### 3. Instala ngrok
+
+Descarga y descomprime ngrok:
+
+```bash
+wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+tar -xzf ngrok-v3-stable-linux-amd64.tgz
+sudo mv ngrok /usr/local/bin/
+```
+
+Verifica la instalación:
+
+```bash
+ngrok version
+```
+
+### 4. Clona este repositorio
+
+```bash
+git clone https://github.com/tu_usuario/tu_repositorio.git
+cd tu_repositorio
+```
+
+### 5. Instala dependencias de Python
+
+```bash
+pip3 install -r requirements.txt
+```
+
+Si no existe `requirements.txt`, instala manualmente:
+
+```bash
+pip3 install python-dotenv requests
+```
+
+### 6. Prepara los archivos de configuración
+
+Crea la carpeta `server` si no existe:
+
+```bash
+mkdir -p server
+```
+
+Crea los archivos de versión:
+
+```bash
+echo "1.20.4" > server/VERSION.txt
+echo "1.16.5" > server/FORGE_VERSION.txt
+```
+
+Crea el archivo `.env` en la carpeta `server/` con tu webhook de Discord y tu token de ngrok:
+
+```bash
+cat > server/.env <<EOF
+DISCORD_WEBHOOK=https://discord.com/api/webhooks/tu_webhook_aqui
+NGROK_AUTHTOKEN=tu_token_de_ngrok_aqui
+EOF
+```
+
+> **Nota:** Debes obtener tu propio webhook de Discord y tu token de ngrok desde [ngrok.com](https://ngrok.com/).
+
+### 7. Ejecuta el servidor
+
+Desde la raíz del proyecto, ejecuta:
 
 ```bash
 python3 server/server.py
 ```
 
-El script te preguntará si quieres iniciar el servidor en modo **vanilla** o con **mods** (Forge/Fabric). Si eliges mods, también te preguntará qué modloader usar.
-
-- Si quieres cambiar la versión de Minecraft o Forge, el script te lo preguntará antes de iniciar.
-- El servidor se expondrá automáticamente a Internet usando ngrok y notificará el estado en tu canal de Discord (si configuraste el webhook).
+El script te guiará paso a paso para elegir el tipo de servidor (vanilla, Forge o Fabric), la versión y configuraciones adicionales.
 
 ---
 
-## 📝 Notas importantes
+**¡Listo!**  
+Tu servidor de Minecraft se instalará y ejecutará automáticamente, exponiéndose a Internet mediante ngrok y notificando el estado en tu canal de Discord.
 
-- Si no configuras el archivo `.env` correctamente, **no podrás recibir notificaciones en Discord ni exponer el servidor públicamente**.
-- Puedes detener el servidor en cualquier momento con `Ctrl+C` en la terminal.
-- Los archivos y carpetas de cada tipo de servidor (`vanilla`, `forge`, `fabric`) se crean automáticamente en la carpeta `server/`.
-
----
-
-## 🛠️ Personalización
-
-- Puedes modificar los archivos `VERSION.txt` y `FORGE_VERSION.txt` manualmente si lo prefieres.
-- Si quieres usar otro ejecutable de Java, puedes pasar la ruta con el argumento `--java`:
-
-  ```bash
-  python3 server/server.py --java /ruta/a/java
-  ```
-
----
-
-¿Dudas o problemas? ¡Revisa los mensajes de la terminal y asegúrate de que tu `.env` esté bien configurado!
+¿Dudas o problemas?  
+Revisa los mensajes de la terminal y asegúrate de que tu archivo `.env` esté bien configurado.
