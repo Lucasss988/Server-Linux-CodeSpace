@@ -104,6 +104,18 @@ java -version
 > ```
 >
 > 🛠️ Cambia la ruta si tu sistema tiene Java 8 en otra ubicación.
+>
+> 🟦 **¿Quieres usar Temurin Java 8 (por ejemplo, `/usr/lib/jvm/temurin-8u312/bin/java`)?**
+>
+> Instálalo así:
+>
+> ```bash
+> wget https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jdk_x64_linux_hotspot_8u312b07.tar.gz
+> sudo mkdir -p /usr/lib/jvm/temurin-8u312
+> sudo tar -xzf OpenJDK8U-jdk_x64_linux_hotspot_8u312b07.tar.gz -C /usr/lib/jvm/temurin-8u312 --strip-components=1
+> ```
+>
+> Así tendrás disponible el ejecutable en `/usr/lib/jvm/temurin-8u312/bin/java`.
 
 ---
 
