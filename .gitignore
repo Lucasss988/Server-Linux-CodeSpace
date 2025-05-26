@@ -1,6 +1,8 @@
 notebooks/data
 .ipynb_checkpoints/
-
+Python-3.12.10/
+.devcontainer/
+.venv/
 # Ignore Python cache files
 __pycache__/
 *.py[cod]
@@ -17,3 +19,8 @@ venv/
 
 # Ignore Python bytecode files
 .env
+.gitignore
+*.env
+*.DS_Store
+FORGE_VERSION.txt
+VERSION.txt
