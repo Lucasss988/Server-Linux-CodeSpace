@@ -237,6 +237,30 @@ if modo == "mods":
 java_bin = args_parsed.java if args_parsed.java != "java" else seleccionar_java_por_version(version)
 print(f"✅ Usando Java: {java_bin}")
 
+# ============================
+# SELECCIÓN DE RAM POR USUARIO
+# ============================
+print("\n" + "="*60)
+print("💾  ¿CUÁNTA RAM QUIERES ASIGNAR AL SERVIDOR?  💾".center(60))
+print("="*60)
+print("🔴 Elige la cantidad de RAM (en GB) que usará el servidor.")
+print("⚠️  Mínimo recomendado: 2 GB | Máximo permitido: 16 GB")
+print("💡 Si pones un valor inválido, se usará 4 GB por defecto.")
+print("="*60)
+
+try:
+    ram_gb = int(input("👉 Ingresa la cantidad de RAM (GB): ").strip())
+    if ram_gb < 2 or ram_gb > 16:
+        print("⚠️  Valor fuera de rango. Se usará 4 GB por defecto.")
+        ram_gb = 4
+except Exception:
+    print("⚠️  Valor inválido. Se usará 4 GB por defecto.")
+    ram_gb = 4
+
+ram_str = f"-Xmx{ram_gb}G -Xms{ram_gb}G"
+print(f"✅ El servidor se ejecutará con {ram_gb} GB de RAM.\n")
+# ============================
+
 ngrok_proc = None
 public_url = None
 
@@ -350,7 +374,7 @@ if modo == "mods" and modloader == "forge":
     # Si usas el JAR universal (para versiones antiguas)
     print("Iniciando servidor Forge con mods...")
     notificar_estado_servidor("online", version, public_url)  # Notifica que está online antes de arrancar
-    subprocess.run([java_bin, "-Xmx10G", "-Xms10G", "-jar", os.path.basename(forge_jar_file), "nogui"], cwd=FORGE_DIR)
+    subprocess.run([java_bin, *ram_str.split(), "-jar", os.path.basename(forge_jar_file), "nogui"], cwd=FORGE_DIR)
     print("El servidor fue cerrado con éxito.")
     notificar_estado_servidor("offline", version, public_url)
     if ngrok_proc:
@@ -379,7 +403,7 @@ elif modo == "mods" and modloader == "fabric":
 
     print("Iniciando servidor Fabric...")
     notificar_estado_servidor("online", version, public_url)  # Notifica que está online antes de arrancar
-    subprocess.run([java_bin, "-Xmx8G", "-Xms8G", "-jar", "server.jar", "nogui"], cwd=FABRIC_DIR)
+    subprocess.run([java_bin, *ram_str.split(), "-jar", "server.jar", "nogui"], cwd=FABRIC_DIR)
     print("El servidor fue cerrado con éxito.")
     notificar_estado_servidor("offline", version, public_url)
     if ngrok_proc:
@@ -433,7 +457,7 @@ elif modo == "vanilla":
 
     print("Iniciando servidor vanilla...")
     notificar_estado_servidor("online", version, public_url)  # Notifica que está online antes de arrancar
-    subprocess.run([java_bin, "-Xmx8G", "-Xms8G", "-jar", "server.jar", "nogui"], cwd=VANILLA_DIR)
+    subprocess.run([java_bin, *ram_str.split(), "-jar", "server.jar", "nogui"], cwd=VANILLA_DIR)
     print("El servidor fue cerrado con éxito.")
     notificar_estado_servidor("offline", version, public_url)
     if ngrok_proc:
