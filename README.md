@@ -9,6 +9,22 @@ Este proyecto te permite ejecutar un servidor de Minecraft **interactivamente** 
 
 ---
 
+> ⚠️ **Aviso importante sobre Codespaces:**  
+> El servidor en GitHub Codespaces es **solo para pruebas**.  
+> ⏳ **Codespaces se apaga automáticamente tras 30 minutos sin actividad en la terminal**, por lo que **no es recomendable para servidores de Minecraft en producción o uso prolongado**.  
+>  
+> 💡 **Si quieres un servidor estable y siempre online, considera migrar a un servidor Linux propio o una VPS.**  
+> Aquí tienes algunas opciones de VPS con buena relación calidad-precio:
+>
+> - 🌐 [Hetzner Cloud](https://www.hetzner.com/cloud) (muy buen precio en Europa)
+> - 🌐 [Contabo](https://contabo.com/) (gran capacidad y precios bajos)
+> - 🌐 [Vultr](https://www.vultr.com/) (opciones globales y flexibles)
+> - 🌐 [DigitalOcean](https://www.digitalocean.com/) (fácil de usar y buen soporte)
+>
+> Busca siempre una VPS con al menos **4 núcleos y 16 GB de RAM** para un rendimiento óptimo.
+
+---
+
 ## 🚀 Primeros pasos
 
 1. **Prepara los archivos de versión:**
