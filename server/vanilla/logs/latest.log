@@ -1,40 +1,36 @@
-[23:50:32] [ServerMain/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
-[23:50:34] [ServerMain/INFO]: Loaded 7 recipes
-[23:50:34] [ServerMain/INFO]: Loaded 1271 advancements
-[23:50:35] [Server thread/INFO]: Starting minecraft server version 1.20
-[23:50:35] [Server thread/INFO]: Loading properties
-[23:50:35] [Server thread/INFO]: Default game type: SURVIVAL
-[23:50:35] [Server thread/INFO]: Generating keypair
-[23:50:35] [Server thread/INFO]: Starting Minecraft server on *:25565
-[23:50:35] [Server thread/INFO]: Using epoll channel type
-[23:50:35] [Server thread/INFO]: Preparing level "world"
-[23:50:38] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
-[23:50:40] [Worker-Main-2/INFO]: Preparing spawn area: 0%
-[23:50:40] [Worker-Main-3/INFO]: Preparing spawn area: 0%
-[23:50:40] [Worker-Main-1/INFO]: Preparing spawn area: 0%
-[23:50:40] [Worker-Main-3/INFO]: Preparing spawn area: 0%
-[23:50:40] [Worker-Main-1/INFO]: Preparing spawn area: 0%
-[23:50:40] [Worker-Main-1/INFO]: Preparing spawn area: 0%
-[23:50:41] [Worker-Main-3/INFO]: Preparing spawn area: 0%
-[23:50:41] [Worker-Main-1/INFO]: Preparing spawn area: 31%
-[23:50:42] [Worker-Main-1/INFO]: Preparing spawn area: 96%
-[23:50:42] [Server thread/INFO]: Time elapsed: 4021 ms
-[23:50:42] [Server thread/INFO]: Done (6.717s)! For help, type "help"
-[23:50:45] [User Authenticator #1/INFO]: UUID of player XXBitx_SlayerxX is 9833795d-0c61-441f-8b1d-6ac02830c7f7
-[23:50:45] [Server thread/INFO]: XXBitx_SlayerxX[/[0:0:0:0:0:0:0:1%0]:56360] logged in with entity id 61 at (1.5, 93.0, 9.5)
-[23:50:45] [Server thread/INFO]: XXBitx_SlayerxX joined the game
-[23:50:51] [Server thread/WARN]: Mismatch in destroy block pos: gu{x=2, y=94, z=8} gu{x=4, y=92, z=9}
-[23:50:51] [Server thread/WARN]: Mismatch in destroy block pos: gu{x=2, y=94, z=8} gu{x=4, y=92, z=9}
-[23:50:51] [Server thread/WARN]: Mismatch in destroy block pos: gu{x=2, y=94, z=8} gu{x=4, y=92, z=9}
-[23:51:30] [Server thread/INFO]: Made XXBitx_SlayerxX a server operator
-[23:51:36] [Server thread/INFO]: [XXBitx_SlayerxX: Stopping the server]
-[23:51:36] [Server thread/INFO]: Stopping server
-[23:51:36] [Server thread/INFO]: Saving players
-[23:51:36] [Server thread/INFO]: Saving worlds
-[23:51:37] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
-[23:51:38] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
-[23:51:38] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
-[23:51:38] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
-[23:51:38] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[23:51:38] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[23:51:38] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[00:05:16] [ServerMain/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[00:05:17] [ServerMain/INFO]: Loaded 7 recipes
+[00:05:18] [ServerMain/INFO]: Loaded 1271 advancements
+[00:05:18] [Server thread/INFO]: Starting minecraft server version 1.20
+[00:05:18] [Server thread/INFO]: Loading properties
+[00:05:18] [Server thread/INFO]: Default game type: SURVIVAL
+[00:05:18] [Server thread/INFO]: Generating keypair
+[00:05:18] [Server thread/INFO]: Starting Minecraft server on *:25565
+[00:05:18] [Server thread/INFO]: Using epoll channel type
+[00:05:18] [Server thread/INFO]: Preparing level "world"
+[00:05:21] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[00:05:24] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[00:05:24] [Worker-Main-2/INFO]: Preparing spawn area: 0%
+[00:05:24] [Worker-Main-2/INFO]: Preparing spawn area: 0%
+[00:05:24] [Worker-Main-3/INFO]: Preparing spawn area: 0%
+[00:05:24] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[00:05:24] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[00:05:24] [Worker-Main-3/INFO]: Preparing spawn area: 0%
+[00:05:24] [Worker-Main-2/INFO]: Preparing spawn area: 8%
+[00:05:25] [Worker-Main-2/INFO]: Preparing spawn area: 84%
+[00:05:25] [Server thread/INFO]: Time elapsed: 4116 ms
+[00:05:25] [Server thread/INFO]: Done (6.523s)! For help, type "help"
+[00:05:29] [User Authenticator #1/INFO]: UUID of player XXBitx_SlayerxX is 9833795d-0c61-441f-8b1d-6ac02830c7f7
+[00:05:29] [Server thread/INFO]: XXBitx_SlayerxX[/[0:0:0:0:0:0:0:1%0]:38584] logged in with entity id 165 at (2.6482126133474866, 94.0, 7.197587468972765)
+[00:05:29] [Server thread/INFO]: XXBitx_SlayerxX joined the game
+[00:05:56] [Server thread/INFO]: [XXBitx_SlayerxX: Stopping the server]
+[00:05:56] [Server thread/INFO]: Stopping server
+[00:05:56] [Server thread/INFO]: Saving players
+[00:05:56] [Server thread/INFO]: Saving worlds
+[00:05:58] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[00:06:01] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[00:06:01] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[00:06:01] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[00:06:01] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[00:06:01] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[00:06:01] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
