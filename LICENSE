@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 GitHub
+Copyright (c) 2025 Lucasss988
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,20 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+# Explicación de server.py
+
+El archivo `server.py` automatiza la instalación y ejecución de un servidor de Minecraft en un entorno Linux, permitiendo elegir entre los modos **Vanilla**, **Forge** o **Fabric**. El script:
+
+- Lee la versión de Minecraft y Forge desde archivos de configuración.
+- Descarga e instala automáticamente el servidor y los modloaders necesarios.
+- Selecciona la versión de Java adecuada según la versión de Minecraft.
+- Expone el servidor a Internet usando ngrok, autenticando con el token del usuario.
+- Envía notificaciones de estado (online/offline) a un canal de Discord mediante un webhook configurado por el usuario.
+- Permite cambiar la versión de Minecraft o Forge de forma interactiva.
+- Crea y gestiona las carpetas y archivos necesarios para cada tipo de servidor.
+- Todo se controla desde la terminal, facilitando la administración y personalización del servidor.
+
+Este script está pensado para funcionar en entornos como GitHub Codespaces o cualquier sistema Linux con los requisitos mencionados.
