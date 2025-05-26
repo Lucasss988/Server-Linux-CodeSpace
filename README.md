@@ -6,13 +6,7 @@ Este proyecto te permite ejecutar un servidor de Minecraft **interactivamente** 
 > - 🖥️ Codespace con Ubuntu y al menos **16 GB de RAM y 4 cores**
 > - 🐍 Python 3.12.10
 > - ☕ Java 8, 17 y 21 disponibles en el contenedor
-
----
-
-> ⚠️ **Aviso importante sobre Codespaces:**  
-> El servidor en GitHub Codespaces es **solo para pruebas**.  
-> ⏳ **Codespaces se apaga automáticamente tras 30 minutos sin actividad en la terminal**, por lo que **no es recomendable para servidores de Minecraft en producción o uso prolongado**.  
->  
+ 
 ---
 
 ## 🗂️ Versiones de Minecraft y Java soportadas
@@ -61,6 +55,12 @@ python3 server/server.py --java /ruta/a/tu/java
 
 > 🧩 Si tienes dudas sobre la compatibilidad, revisa los mensajes de la terminal o consulta la documentación oficial de cada modloader.
 
+---
+
+> ⚠️ **Aviso importante sobre Codespaces:**  
+> El servidor en GitHub Codespaces es **solo para pruebas**.  
+> ⏳ **Codespaces se apaga automáticamente tras 30 minutos sin actividad en la terminal**, por lo que **no es recomendable para servidores de Minecraft en producción o uso prolongado**.  
+>  
 ---
 
 > 💡 **Si quieres un servidor estable y siempre online, considera migrar a un servidor Linux propio o una VPS.**  
