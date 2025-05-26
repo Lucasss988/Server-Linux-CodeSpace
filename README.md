@@ -4,7 +4,7 @@ Este proyecto te permite ejecutar un servidor de Minecraft **interactivamente** 
 
 > ⚡ **Requisitos:**
 > - 🖥️ Codespace con Ubuntu y al menos **16 GB de RAM y 4 cores**
-> - 🐍 Python 3.9+
+> - 🐍 Python 3.12.10
 > - ☕ Java 8, 17 y 21 disponibles en el contenedor
 
 ---
