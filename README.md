@@ -103,12 +103,18 @@ python3 server/server.py --java /ruta/a/tu/java
 ## 🔑 Autenticación con ngrok
 
 Para que ngrok funcione correctamente y puedas exponer tu servidor a Internet, **debes autenticarte con tu cuenta de ngrok**.  
-Esto se realiza automáticamente si defines correctamente el valor de `NGROK_AUTHTOKEN` en tu archivo `.env`.  
+Esto se realiza automáticamente si defines correctamente el valor de `NGROK_AUTHTOKEN` en tu archivo `.env`.
+
+> ⚠️ **IMPORTANTE:**  
+> Para poder liberar y usar el puerto 25565 (el puerto estándar de Minecraft) con ngrok, **debes tener una cuenta verificada con un método de pago (tarjeta de débito o crédito) en la página de ngrok**.  
+> Si solo tienes una cuenta gratuita sin método de pago, ngrok asignará un puerto aleatorio y no podrás usar el 25565 directamente.
+
 Si nunca has usado ngrok antes, sigue estos pasos:
 
 1. 📝 Crea una cuenta gratuita en [ngrok.com](https://ngrok.com/).
-2. 🔍 Ve a tu panel de usuario y copia tu **Auth Token**.
-3. 🗒️ Pega ese token en el archivo `server/.env` como se muestra arriba.
+2. 💳 Agrega un método de pago (tarjeta de débito o crédito) en tu perfil de ngrok para poder reservar el puerto 25565.
+3. 🔍 Ve a tu panel de usuario y copia tu **Auth Token**.
+4. 🗒️ Pega ese token en el archivo `server/.env` como se muestra arriba.
 
 > 🟢 **El script se encargará de autenticar ngrok usando ese token la primera vez que lo ejecutes.**
 
