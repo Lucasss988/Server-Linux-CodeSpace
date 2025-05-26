@@ -13,6 +13,56 @@ Este proyecto te permite ejecutar un servidor de Minecraft **interactivamente** 
 > El servidor en GitHub Codespaces es **solo para pruebas**.  
 > ⏳ **Codespaces se apaga automáticamente tras 30 minutos sin actividad en la terminal**, por lo que **no es recomendable para servidores de Minecraft en producción o uso prolongado**.  
 >  
+---
+
+## 🗂️ Versiones de Minecraft y Java soportadas
+
+---
+> 📢 **IMPORTANTE:**  
+> El script selecciona automáticamente la versión de Java recomendada según la versión de Minecraft que elijas, pero puedes forzar una ruta específica usando el argumento `--java`.
+
+A continuación se muestra una tabla de compatibilidad entre versiones de Minecraft y las versiones de Java que utiliza el script:
+
+| 🎮 Versión de Minecraft | ☕ Java recomendado                        | 📁 Ruta típica del ejecutable Java                      |
+|------------------------|--------------------------------------------|--------------------------------------------------------|
+| 1.8.x – 1.16.x         | Java 8 (OpenJDK u OpenJ9/Temurin)          | `/usr/lib/jvm/java-8-openjdk-amd64/bin/java`<br>`/usr/lib/jvm/temurin-8u312/bin/java` |
+| 1.17.x – 1.20.x        | Java 17                                    | `/usr/lib/jvm/java-17-openjdk-amd64/bin/java`          |
+| 1.21.x y superiores    | Java 21                                    | `/usr/lib/jvm/java-21-openjdk-amd64/bin/java`          |
+
+- 🟦 **Temurin Java 8** es especialmente útil para mods y Forge en 1.16.x y anteriores.
+- 🟢 **Java 17** es requerido para versiones modernas (1.17 a 1.20).
+- 🟣 **Java 21** es recomendado para las versiones más recientes (1.21+).
+
+> ⚠️ **Nota:**  
+> Si usas Forge con Minecraft 1.16.4 o versiones similares, **debes usar Java 8**.  
+> Para versiones más nuevas, Java 17 o 21 es obligatorio.
+
+### 🔍 ¿Cómo saber qué Java se está usando?
+
+El script imprime en la terminal la ruta del ejecutable Java seleccionado automáticamente.  
+Si quieres forzar una versión específica, ejecuta así:
+
+```bash
+python3 server/server.py --java /ruta/a/tu/java
+```
+
+---
+
+### 📝 Resumen rápido
+
+- **1.8.x – 1.16.x:**  
+  - Usa Java 8 (`openjdk-8-jdk` o Temurin 8)
+- **1.17.x – 1.20.x:**  
+  - Usa Java 17 (`openjdk-17-jdk`)
+- **1.21.x y superiores:**  
+  - Usa Java 21 (`openjdk-21-jdk`)
+
+---
+
+> 🧩 Si tienes dudas sobre la compatibilidad, revisa los mensajes de la terminal o consulta la documentación oficial de cada modloader.
+
+---
+
 > 💡 **Si quieres un servidor estable y siempre online, considera migrar a un servidor Linux propio o una VPS.**  
 > Aquí tienes algunas opciones de VPS con buena relación calidad-precio:
 >
