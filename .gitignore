@@ -1,26 +1,66 @@
 notebooks/data
 .ipynb_checkpoints/
-Python-3.12.10/
-.devcontainer/
-.venv/
-# Ignore Python cache files
+# Ignore Jupyter Notebook checkpoints
 __pycache__/
-*.py[cod]
-
-# Ignore Jupyter Notebook checkpoints
-
-# Ignore virtual environment directories
-*.ipynb_checkpoints
-
-# Ignore virtual environment directories
-venv/
-
-# Ignore Jupyter Notebook checkpoints
-
+# Ignore Python cache files
+*.pyc
 # Ignore Python bytecode files
-.env
-.gitignore
-*.env
+*.pyo
+# Ignore Python optimized files
+*.pyd
+# Ignore Python distribution files
+*.pdb
+# Ignore Python debug files
+*.egg
+# Ignore Python egg files
+*.egg-info/
+# Ignore Python egg info directories
+*.whl
+# Ignore Python wheel files
+*.tar.gz
+# Ignore Python source distribution files
+*.zip
+# Ignore Python zip files
+*.log
+# Ignore log files
 *.DS_Store
-FORGE_VERSION.txt
-VERSION.txt
+# Ignore macOS Finder metadata files
+*.vscode/
+# Ignore Visual Studio Code workspace settings
+*.idea/
+# Ignore JetBrains IDE settings
+*.env
+# Ignore environment variable files
+*.coverage
+# Ignore coverage report files
+*.coverage.*
+# Ignore coverage report files with extensions
+*.mypy_cache/
+# Ignore mypy cache directories
+*.pytest_cache/
+# Ignore pytest cache directories
+*.tox/
+# Ignore tox virtual environments
+*.dist-info/
+# Ignore Python distribution info directories
+*.pkl
+# Ignore Python pickle files
+*.pkl.gz
+# Ignore compressed pickle files
+*.ipynb
+# Ignore Jupyter Notebook files
+*.ipynb_checkpoints/
+# Ignore Jupyter Notebook checkpoints
+*.csv
+# Ignore CSV files
+*.tsv
+# Ignore TSV files
+*.json
+# Ignore JSON files
+*.yaml
+# Ignore YAML files
+*.yml
+# Ignore YAML files
+*.md
+# Ignore text files
+*.rst
